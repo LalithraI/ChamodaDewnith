@@ -1,4 +1,5 @@
 import './About.css';
+import ProfilePic from '../assets/images/ProfilePic.jpg';
 
 const About = () => {
   return (
@@ -6,7 +7,7 @@ const About = () => {
       <div className="about-container">
         <div className="about-image">
           <img 
-            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" 
+            src={ProfilePic} 
             alt="Chamoda Dewnith" 
           />
         </div>

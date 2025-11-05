@@ -4,9 +4,9 @@
   gap: 4rem;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 6rem 2rem;
+  padding: 4rem 2rem;
   align-items: center;
-  min-height: 70vh;
+  min-height: auto;
 }
 
 .hero-content {
@@ -74,7 +74,7 @@
 
 .hero-image {
   position: relative;
-  height: 600px;
+  height: 500px;
   overflow: hidden;
 }
 

@@ -19,6 +19,20 @@
 .logo {
   text-decoration: none;
   color: #000000;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-image {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
 }
 
 .logo h1 {
