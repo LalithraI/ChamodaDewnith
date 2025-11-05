@@ -23,13 +23,37 @@ const Contact = () => {
     e.preventDefault();
     setStatus('sending');
 
-    // EmailJS configuration
-    // Replace these with your EmailJS credentials
-    const serviceID = 'YOUR_SERVICE_ID';
-    const templateID = 'YOUR_TEMPLATE_ID';
-    const userID = 'YOUR_USER_ID';
+    // Add current timestamp to the form
+    const currentTime = new Date().toLocaleString('en-US', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    });
 
-    emailjs.sendForm(serviceID, templateID, formRef.current, userID)
+    // EmailJS configuration
+    // Get your credentials from https://www.emailjs.com/
+    const serviceID = 'service_2j3l983';
+    const templateID = 'template_0m76fbo';
+    const userID = 'JIjL5N4wvhpimQvFq';
+
+    // Create template parameters with timestamp
+    const templateParams = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      message: formData.message,
+      time: currentTime
+    };
+
+    // Note: EmailJS will send to lalithraindupa2002@gmail.com
+    // Configure this email in your EmailJS template settings
+    
+    emailjs.send(serviceID, templateID, templateParams, userID)
       .then((result) => {
         console.log(result.text);
         setStatus('success');
@@ -56,7 +80,7 @@ const Contact = () => {
             <h3>Contact Information</h3>
             <div className="info-item">
               <strong>Email</strong>
-              <p>chamodadewnith@architect.com</p>
+              <p>lalithraindupa2002@gmail.com</p>
             </div>
             <div className="info-item">
               <strong>Phone</strong>
