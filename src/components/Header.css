@@ -5,6 +5,11 @@
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.header:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .header-container {
@@ -22,12 +27,24 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: translateY(-2px);
 }
 
 .logo-image {
   height: 70px;
   width: auto;
   object-fit: contain;
+  transition: transform 0.4s ease, filter 0.4s ease;
+  filter: brightness(1);
+}
+
+.logo:hover .logo-image {
+  transform: scale(1.05) rotate(2deg);
+  filter: brightness(1.1);
 }
 
 .logo-text {
@@ -66,19 +83,21 @@
   text-decoration: none;
   letter-spacing: 1px;
   font-weight: 400;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
   position: relative;
+  padding: 0.5rem 0;
 }
 
 .nav-link::after {
   content: '';
   position: absolute;
   width: 0;
-  height: 1px;
-  bottom: -5px;
-  left: 0;
-  background-color: #000000;
-  transition: width 0.3s ease;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background: linear-gradient(90deg, transparent, #000000, transparent);
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform: translateX(-50%);
 }
 
 .nav-link:hover::after {
@@ -86,7 +105,8 @@
 }
 
 .nav-link:hover {
-  opacity: 0.7;
+  transform: translateY(-2px);
+  color: #333333;
 }
 
 @media (max-width: 768px) {

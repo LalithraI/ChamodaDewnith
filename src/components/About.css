@@ -16,6 +16,14 @@
   position: relative;
   height: 600px;
   overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s ease;
+}
+
+.about-image:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 }
 
 .about-image img {
@@ -23,11 +31,13 @@
   height: 100%;
   object-fit: cover;
   filter: grayscale(100%);
-  transition: filter 0.3s ease;
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform: scale(1);
 }
 
 .about-image:hover img {
   filter: grayscale(0%);
+  transform: scale(1.05);
 }
 
 .about-content {
@@ -71,6 +81,11 @@
 
 .stat-item {
   text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-5px);
 }
 
 .stat-item h3 {
@@ -79,6 +94,12 @@
   font-weight: 700;
   color: #000000;
   margin: 0 0 0.5rem 0;
+  transition: all 0.4s ease;
+}
+
+.stat-item:hover h3 {
+  color: #333333;
+  transform: scale(1.1);
 }
 
 .stat-item p {
@@ -89,6 +110,11 @@
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.stat-item:hover p {
+  color: #000000;
 }
 
 @media (max-width: 968px) {
