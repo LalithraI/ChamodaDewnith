@@ -1,15 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProjectCard from './ProjectCard';
-import { projects } from '../data/projects';
 import './ProjectGallery.css';
 
 const ProjectGallery = () => {
   const [filter, setFilter] = useState('All');
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
   const categories = ['All', 'Residential', 'Commercial', 'Public'];
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const fetchProjects = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/projects');
+      const data = await response.json();
+      setProjects(data);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredProjects = filter === 'All' 
     ? projects 
     : projects.filter(project => project.category === filter);
+
+  if (loading) {
+    return (
+      <section id="projects" className="project-gallery">
+        <div className="gallery-header">
+          <h2 className="section-title">Featured Projects</h2>
+          <p className="section-description">Loading projects...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="projects" className="project-gallery">
@@ -34,9 +62,13 @@ const ProjectGallery = () => {
       </div>
 
       <div className="projects-grid">
-        {filteredProjects.map(project => (
-          <ProjectCard key={project.id} project={project} />
-        ))}
+        {filteredProjects.length > 0 ? (
+          filteredProjects.map(project => (
+            <ProjectCard key={project._id || project.id} project={project} />
+          ))
+        ) : (
+          <p className="no-projects">No projects found in this category.</p>
+        )}
       </div>
     </section>
   );

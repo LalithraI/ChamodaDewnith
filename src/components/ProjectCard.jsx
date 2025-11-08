@@ -3,9 +3,9 @@ import './ProjectCard.css';
 
 const ProjectCard = ({ project }) => {
   return (
-    <Link to={`/project/${project.id}`} className="project-card">
+    <Link to={`/project/${project._id || project.id}`} className="project-card">
       <div className="project-image">
-        <img src={project.thumbnail} alt={project.title} />
+        <img src={project.thumbnail || project.images?.[0]} alt={project.title} />
         <div className="project-overlay">
           <span className="view-project">View Project →</span>
         </div>

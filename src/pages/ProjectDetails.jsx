@@ -1,12 +1,38 @@
 import { useParams, Link } from 'react-router-dom';
-import { useState } from 'react';
-import { projects } from '../data/projects';
+import { useState, useEffect } from 'react';
 import './ProjectDetails.css';
 
 const ProjectDetails = () => {
   const { id } = useParams();
-  const project = projects.find(p => p.id === parseInt(id));
+  const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
+
+  useEffect(() => {
+    fetchProject();
+  }, [id]);
+
+  const fetchProject = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/projects/${id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setProject(data);
+      }
+    } catch (error) {
+      console.error('Error fetching project:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="not-found">
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
 
   if (!project) {
     return (
