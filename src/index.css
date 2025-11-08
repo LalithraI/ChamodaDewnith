@@ -18,12 +18,28 @@
 
 body {
   font-family: 'Montserrat', sans-serif;
-  background: var(--bg-color);
+  background: #f8f8f8;
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 24px,
+      rgba(0, 0, 0, 0.08) 24px,
+      rgba(0, 0, 0, 0.08) 25px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 24px,
+      rgba(0, 0, 0, 0.08) 24px,
+      rgba(0, 0, 0, 0.08) 25px
+    );
   color: var(--text-color);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  position: relative;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -54,4 +70,6 @@ img {
 #root {
   width: 100%;
   min-height: 100vh;
+  position: relative;
+  background: transparent;
 }
