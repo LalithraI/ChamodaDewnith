@@ -165,18 +165,18 @@ const Contact = () => {
               className="submit-btn"
               disabled={status === 'sending'}
             >
-              {status === 'sending' ? 'Sending...' : 'Send Message'}
+              {status === 'sending' ? '✉️ Sending...' : '📤 Send Message'}
             </button>
 
             {status === 'success' && (
               <div className="status-message success">
-                Thank you! Your message has been sent successfully.
+                ✅ Thank you! Your message has been sent successfully. We'll get back to you soon!
               </div>
             )}
 
             {status === 'error' && (
               <div className="status-message error">
-                Oops! Something went wrong. Please try again or email directly.
+                ❌ Oops! Something went wrong. Please try again or email us directly at lalithraindupa2002@gmail.com
               </div>
             )}
           </form>

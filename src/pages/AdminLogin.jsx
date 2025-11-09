@@ -26,10 +26,10 @@ const AdminLogin = () => {
         localStorage.setItem('admin_token', data.token);
         navigate('/admin/dashboard');
       } else {
-        setError(data.error || 'Login failed');
+        setError(data.error || '❌ Invalid credentials. Please check your username and password.');
       }
     } catch (err) {
-      setError('Server connection failed. Please try again.');
+      setError('⚠️ Unable to connect to server. Please ensure the backend is running.');
     } finally {
       setLoading(false);
     }

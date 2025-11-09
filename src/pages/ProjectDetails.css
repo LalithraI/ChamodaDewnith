@@ -200,18 +200,41 @@
 .not-found {
   text-align: center;
   padding: 6rem 2rem;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .not-found h2 {
   font-family: 'Playfair Display', serif;
   font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.not-found p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.1rem;
+  color: #666666;
   margin-bottom: 2rem;
 }
 
 .not-found a {
   font-family: 'Montserrat', sans-serif;
-  color: #000000;
-  text-decoration: underline;
+  color: #ffffff;
+  background: #000000;
+  padding: 0.9rem 2rem;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+.not-found a:hover {
+  background: #333333;
+  transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {

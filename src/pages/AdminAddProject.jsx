@@ -77,7 +77,7 @@ const AdminAddProject = () => {
     const files = Array.from(e.target.files);
     
     if (files.length > 6) {
-      alert('Maximum 6 images allowed');
+      alert('⚠️ Maximum 6 images allowed per project. Please select up to 6 images.');
       return;
     }
 
@@ -158,16 +158,25 @@ const AdminAddProject = () => {
       });
 
       if (response.ok) {
-        alert(`Project ${isEditMode ? 'updated' : 'added'} successfully!`);
+        const successMessage = isEditMode 
+          ? '✅ Project updated successfully! Your changes are now live.' 
+          : '🎉 Project added successfully! Your new project is now visible on the website.';
+        alert(successMessage);
         navigate('/admin/dashboard');
       } else {
         const error = await response.json();
         console.error('Server error:', error);
-        alert(`Failed to ${isEditMode ? 'update' : 'add'} project: ${error.error || 'Unknown error'}`);
+        const errorMessage = isEditMode 
+          ? `❌ Failed to update project: ${error.error || 'Please check your inputs and try again.'}` 
+          : `❌ Failed to add project: ${error.error || 'Please check your inputs and try again.'}`;
+        alert(errorMessage);
       }
     } catch (error) {
       console.error('Error submitting project:', error);
-      alert(`Failed to ${isEditMode ? 'update' : 'add'} project: ${error.message || 'Please try again.'}`);
+      const catchMessage = isEditMode 
+        ? `⚠️ Unable to update project. ${error.message || 'Please check your connection and try again.'}` 
+        : `⚠️ Unable to add project. ${error.message || 'Please check your connection and try again.'}`;
+      alert(catchMessage);
     } finally {
       setLoading(false);
     }

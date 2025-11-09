@@ -33,7 +33,7 @@ const ProjectGallery = () => {
       <section id="projects" className="project-gallery">
         <div className="gallery-header">
           <h2 className="section-title">Featured Projects</h2>
-          <p className="section-description">Loading projects...</p>
+          <p className="section-description">✨ Loading stunning architectural designs...</p>
         </div>
       </section>
     );
@@ -67,7 +67,12 @@ const ProjectGallery = () => {
             <ProjectCard key={project._id || project.id} project={project} />
           ))
         ) : (
-          <p className="no-projects">No projects found in this category.</p>
+          <p className="no-projects">
+            {projects.length === 0 
+              ? '🏗️ No projects available yet. Check back soon for amazing architectural designs!' 
+              : `📂 No ${filter.toLowerCase()} projects found. Try another category.`
+            }
+          </p>
         )}
       </div>
     </section>

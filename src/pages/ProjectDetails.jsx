@@ -29,7 +29,8 @@ const ProjectDetails = () => {
   if (loading) {
     return (
       <div className="not-found">
-        <h2>Loading...</h2>
+        <h2>⏳ Loading project details...</h2>
+        <p>Please wait while we fetch the architectural masterpiece</p>
       </div>
     );
   }
@@ -37,8 +38,9 @@ const ProjectDetails = () => {
   if (!project) {
     return (
       <div className="not-found">
-        <h2>Project Not Found</h2>
-        <Link to="/">Return to Home</Link>
+        <h2>🔍 Project Not Found</h2>
+        <p>The project you're looking for doesn't exist or has been removed.</p>
+        <Link to="/">← Return to Home</Link>
       </div>
     );
   }

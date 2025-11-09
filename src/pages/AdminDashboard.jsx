@@ -54,7 +54,7 @@ const AdminDashboard = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this project?')) return;
+    if (!window.confirm('🗑️ Are you sure you want to delete this project? This action cannot be undone.')) return;
 
     try {
       const token = localStorage.getItem('admin_token');
@@ -65,14 +65,17 @@ const AdminDashboard = () => {
 
       if (response.ok) {
         setProjects(projects.filter(p => p._id !== id));
+        alert('✅ Project deleted successfully!');
+      } else {
+        alert('❌ Failed to delete project. Please try again.');
       }
     } catch (error) {
-      alert('Failed to delete project');
+      alert('⚠️ Unable to delete project. Please check your connection.');
     }
   };
 
   if (loading) {
-    return <div className="admin-loading">Loading...</div>;
+    return <div className="admin-loading">⏳ Loading your projects...</div>;
   }
 
   return (
@@ -128,9 +131,9 @@ const AdminDashboard = () => {
 
         {projects.length === 0 && (
           <div className="empty-state">
-            <p>No projects yet. Add your first project!</p>
+            <p>📁 No projects yet. Start showcasing your architectural work!</p>
             <Link to="/admin/add-project" className="add-project-btn">
-              + Add New Project
+              + Add Your First Project
             </Link>
           </div>
         )}
