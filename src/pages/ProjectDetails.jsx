@@ -46,7 +46,7 @@ const ProjectDetails = () => {
   return (
     <div className="project-details">
       <div className="project-header">
-        <Link to="/" className="back-link">← Back to Projects</Link>
+        <Link to="/#projects" className="back-link">← Back to Projects</Link>
         <div className="project-meta">
           <span className="meta-category">{project.category}</span>
           <h1 className="project-main-title">{project.title}</h1>
@@ -54,8 +54,12 @@ const ProjectDetails = () => {
             <span>{project.location}</span>
             <span>•</span>
             <span>{project.year}</span>
-            <span>•</span>
-            <span>{project.area}</span>
+            {project.area && (
+              <>
+                <span>•</span>
+                <span>{project.area}</span>
+              </>
+            )}
           </div>
         </div>
       </div>

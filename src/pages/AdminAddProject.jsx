@@ -1,9 +1,12 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import './AdminAddProject.css';
 
 const AdminAddProject = () => {
   const navigate = useNavigate();
+  const { id } = useParams(); // Get ID from URL for edit mode
+  const isEditMode = !!id;
+  
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({
@@ -19,6 +22,39 @@ const AdminAddProject = () => {
   });
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
+
+  useEffect(() => {
+    if (isEditMode) {
+      fetchProject();
+    }
+  }, [id]);
+
+  const fetchProject = async () => {
+    try {
+      const token = localStorage.getItem('admin_token');
+      const response = await fetch(`http://localhost:5000/api/projects/${id}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setFormData({
+          title: data.title,
+          slug: data.slug || '',
+          category: data.category,
+          location: data.location,
+          year: data.year,
+          area: data.area || '',
+          description: data.description,
+          featured: data.featured || false,
+          status: data.status || 'published'
+        });
+        setExistingImages(data.images || []);
+      }
+    } catch (error) {
+      console.error('Error fetching project:', error);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -93,38 +129,45 @@ const AdminAddProject = () => {
     setLoading(true);
 
     try {
-      // Upload images first
+      // Upload new images if any
       console.log('Uploading images...');
-      const imageUrls = await uploadImages();
-      console.log('Images uploaded:', imageUrls);
+      const newImageUrls = await uploadImages();
+      console.log('New images uploaded:', newImageUrls);
 
-      // Create project
+      // Combine existing images with new ones
+      const allImages = isEditMode ? [...existingImages, ...newImageUrls] : newImageUrls;
+
       const token = localStorage.getItem('admin_token');
-      console.log('Creating project with data:', { ...formData, images: imageUrls });
+      const url = isEditMode 
+        ? `http://localhost:5000/api/projects/${id}`
+        : 'http://localhost:5000/api/projects';
+      const method = isEditMode ? 'PUT' : 'POST';
+
+      console.log(`${isEditMode ? 'Updating' : 'Creating'} project with data:`, { ...formData, images: allImages });
       
-      const response = await fetch('http://localhost:5000/api/projects', {
-        method: 'POST',
+      const response = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           ...formData,
-          images: imageUrls
+          images: allImages
         })
       });
 
       if (response.ok) {
-        alert('Project added successfully!');
+        alert(`Project ${isEditMode ? 'updated' : 'added'} successfully!`);
         navigate('/admin/dashboard');
       } else {
         const error = await response.json();
         console.error('Server error:', error);
-        alert(`Failed to add project: ${error.error || 'Unknown error'}`);
+        alert(`Failed to ${isEditMode ? 'update' : 'add'} project: ${error.error || 'Unknown error'}`);
       }
     } catch (error) {
-      console.error('Error adding project:', error);
-      alert(`Failed to add project: ${error.message || 'Please try again.'}`);
+      console.error('Error submitting project:', error);
+      alert(`Failed to ${isEditMode ? 'update' : 'add'} project: ${error.message || 'Please try again.'}`);
     } finally {
       setLoading(false);
     }
@@ -134,7 +177,7 @@ const AdminAddProject = () => {
     <div className="admin-add-project">
       <header className="form-header">
         <div className="form-header-content">
-          <h1>Add New Project</h1>
+          <h1>{isEditMode ? 'Edit Project' : 'Add New Project'}</h1>
           <button onClick={() => navigate('/admin/dashboard')} className="back-btn">
             ← Back to Dashboard
           </button>
@@ -243,26 +286,43 @@ const AdminAddProject = () => {
 
           <div className="form-section">
             <h2>Images</h2>
+            
+            {isEditMode && existingImages.length > 0 && (
+              <div className="form-group full">
+                <label>Existing Images</label>
+                <div className="image-previews">
+                  {existingImages.map((img, index) => (
+                    <div key={`existing-${index}`} className="preview-item">
+                      <img src={img} alt={`Existing ${index + 1}`} />
+                      {index === 0 && <span className="cover-badge">Cover</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
             <div className="form-group full">
-              <label>Project Images (Maximum 6) *</label>
+              <label>{isEditMode ? 'Add More Images (Optional)' : 'Project Images (Maximum 6) *'}</label>
               <input
                 type="file"
                 accept="image/*"
                 multiple
                 onChange={handleImageChange}
-                required
+                required={!isEditMode}
               />
-              <small>Upload up to 6 images. First image will be the cover image.</small>
+              <small>{isEditMode ? 'Add up to 6 more images.' : 'Upload up to 6 images. First image will be the cover image.'}</small>
             </div>
 
             {imagePreviews.length > 0 && (
-              <div className="image-previews">
-                {imagePreviews.map((preview, index) => (
-                  <div key={index} className="preview-item">
-                    <img src={preview} alt={`Preview ${index + 1}`} />
-                    {index === 0 && <span className="cover-badge">Cover</span>}
-                  </div>
-                ))}
+              <div className="form-group full">
+                <label>New Images to Upload</label>
+                <div className="image-previews">
+                  {imagePreviews.map((preview, index) => (
+                    <div key={index} className="preview-item">
+                      <img src={preview} alt={`Preview ${index + 1}`} />
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
@@ -306,7 +366,12 @@ const AdminAddProject = () => {
               className="submit-btn"
               disabled={loading || uploading}
             >
-              {uploading ? 'Uploading Images...' : loading ? 'Adding Project...' : 'Add Project'}
+              {uploading 
+                ? 'Uploading Images...' 
+                : loading 
+                  ? `${isEditMode ? 'Updating' : 'Adding'} Project...` 
+                  : `${isEditMode ? 'Update' : 'Add'} Project`
+              }
             </button>
           </div>
         </form>

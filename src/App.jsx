@@ -35,6 +35,7 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/add-project" element={<AdminAddProject />} />
+          <Route path="/admin/edit-project/:id" element={<AdminAddProject />} />
         </Routes>
       </main>
       {!isAdminRoute && <Footer />}

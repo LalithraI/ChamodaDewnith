@@ -3,15 +3,53 @@ import { Link } from 'react-router-dom';
 import './Hero.css';
 
 const Hero = () => {
-  const heroImages = [
-    "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1200&q=80",
-    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80",
-    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
-    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80",
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80"
-  ];
-
+  const [heroImages, setHeroImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProjectImages();
+  }, []);
+
+  const fetchProjectImages = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/projects');
+      const projects = await response.json();
+      
+      // Collect all images from all projects
+      const allImages = [];
+      projects.forEach(project => {
+        if (project.images && project.images.length > 0) {
+          allImages.push(...project.images);
+        }
+      });
+      
+      // Use first 10 images or fallback to placeholders
+      const imagesToShow = allImages.length > 0 
+        ? allImages.slice(0, 10) 
+        : [
+          "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1200&q=80",
+          "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80",
+          "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
+          "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80",
+          "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80"
+        ];
+      
+      setHeroImages(imagesToShow);
+    } catch (error) {
+      console.error('Error fetching project images:', error);
+      // Fallback to placeholder images
+      setHeroImages([
+        "https://images.unsplash.com/photo-1503174971373-b1f69850bded?w=1200&q=80",
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
+        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80",
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80"
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
