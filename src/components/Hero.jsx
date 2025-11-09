@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../config';
 import './Hero.css';
 
 const Hero = () => {
@@ -13,7 +14,7 @@ const Hero = () => {
 
   const fetchProjectImages = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/projects');
+      const response = await fetch(`${API_URL}/api/projects`);
       const projects = await response.json();
       
       // Collect all images from all projects

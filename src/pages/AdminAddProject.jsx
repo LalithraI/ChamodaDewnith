@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { API_URL } from '../config';
 import './AdminAddProject.css';
 
 const AdminAddProject = () => {
@@ -33,7 +34,7 @@ const AdminAddProject = () => {
   const fetchProject = async () => {
     try {
       const token = localStorage.getItem('admin_token');
-      const response = await fetch(`http://localhost:5000/api/projects/${id}`, {
+      const response = await fetch(`${API_URL}/api/projects/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -101,7 +102,7 @@ const AdminAddProject = () => {
 
     try {
       console.log('Uploading', images.length, 'images...');
-      const response = await fetch('http://localhost:5000/api/upload/multiple', {
+      const response = await fetch(`${API_URL}/api/upload/multiple`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
         body: formDataUpload
@@ -139,8 +140,8 @@ const AdminAddProject = () => {
 
       const token = localStorage.getItem('admin_token');
       const url = isEditMode 
-        ? `http://localhost:5000/api/projects/${id}`
-        : 'http://localhost:5000/api/projects';
+        ? `${API_URL}/api/projects/${id}`
+        : `${API_URL}/api/projects`;
       const method = isEditMode ? 'PUT' : 'POST';
 
       console.log(`${isEditMode ? 'Updating' : 'Creating'} project with data:`, { ...formData, images: allImages });

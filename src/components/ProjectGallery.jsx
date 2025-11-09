@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import ProjectCard from './ProjectCard';
+import { API_URL } from '../config';
 import './ProjectGallery.css';
 
 const ProjectGallery = () => {
@@ -14,7 +15,7 @@ const ProjectGallery = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/projects');
+      const response = await fetch(`${API_URL}/api/projects`);
       const data = await response.json();
       setProjects(data);
     } catch (error) {
